@@ -26,9 +26,9 @@ I manually downloaded the SSH JSON log file (provided separately) and uploaded i
 
 Add Data → Upload → Select JSON file → Index: main
 
-## SPL Queries Used
+## SPL Queries and Findings
 
-Using SPL queries, I listed the  top 10 endpoints with failed SSH login attempts:
+Using SPL queries, I listed the top 10 endpoints with failed SSH login attempts:
 ```spl
 index=main sourcetype="_json" auth_success=false
 | stats count by "id.orig_h"
@@ -36,11 +36,16 @@ index=main sourcetype="_json" auth_success=false
 | head 10
 ```
 
+![Top endpoints](./Images/TopEndpoints.png)
+
 Then, I found the total number of SSH connections:
 ```spl
 index=ssh_lab sourcetype="json"
 | stats count as total_ssh_connections
 ```
+
+![Total connections](./Images/TotalSSHConnections.png)
+
 
 Finall, I counted all of the event types (successful, failed, no-auth, multiple-failed) seen in the logs:
 ```spl
@@ -48,4 +53,10 @@ index=ssh_lab sourcetype="json"
 | stats count by event_type
 ```
 
+![All events](./Images/AllEvents.png)
+
 ## Findings
+- The dataset contains 1,200 SSH-related events, which provides a sufficient volume to analyze authentication patterns and detect anomalies. This volume suggests consistent SSH activity over the logging period, with a mix of successful, failed, and unauthenticated connection attempts.
+- The distribution of failed login attempts shows that there were a small number of IP addresses account for a large share of failures, which is a classic sign of targeted brute-force attempts.
+- The high ratio of failed logins to successes strongly suggests password spraying or brute-force attempts
+
