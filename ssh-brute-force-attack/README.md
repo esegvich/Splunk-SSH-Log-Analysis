@@ -14,7 +14,7 @@ I sued this JSON file:
 **[Linux Auth Log File](./data/linux_auth_logs.json)**
 
 
-## SPL Q!ueries and FIndings
+## SPL Queries and FIndings
 
 
 Using SPL queries, I found which user has attempted the most number of SSH brute attack attempts:
@@ -24,7 +24,7 @@ index=main event="Failed password"
 | sort -count
 ```
 
-
+![Most Attempts](./Images/MostAttempts.png)
 
 Then, I found the IP Address of the user "thor":
 ```spl
@@ -32,7 +32,7 @@ index=main event="Failed password" user="thor"
 | stats count by source_ip
 ```
 
-
+![User Thor IP](./Images/ThorIP.png)
 
 Finally, I found how many times user "thor" failed to login:
 ```spl
@@ -40,10 +40,5 @@ index=main event="Failed password" user="thor"
 | stats count
 ```
 
-
-
-
-
-
-
+![How many times Thor failed to login](./Images/ThorFailedLogin.png)
 
